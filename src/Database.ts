@@ -11,16 +11,17 @@ export class Database {
   public static connections: { [key: string]: Connection } = {};
   public static defaultConnection: string | null = null;
   public static config: Config = {};
-
-  // Chamada automática para inicializar a configuração
+  
   static {
-    const configFilePath = path.join(process.cwd(), "focca.config.json");
+    const pathName = "focca.config.json";
+    const configFilePath = path.join(process.cwd(), pathName);
 
     if (fs.existsSync(configFilePath)) {
       const configFileContent = fs.readFileSync(configFilePath, "utf-8");
       this.config = JSON.parse(configFileContent);
     } else {
-      throw new Error(`Config file not found: ${configFilePath}`);
+      console.warn(`Configuration file ${pathName} was not found, use the config:database command to generate the configuration file for the database.`);
+      this.config = { default: "mysql", connections: {} };
     }
 
     this.defaultConnection = this.config.default || "mysql";

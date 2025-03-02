@@ -1,7 +1,7 @@
 {
     "APP_NAME": "FOCCA",
     "APP_DESCRIPTION": "FOCCA is a modern and flexible ORM (Object-Relational Mapping) for Node.js, designed to simplify interaction with relational and non-relational databases. With an intuitive and powerful API, FOCCA enables developers to build robust and scalable applications with ease.",
-    "APP_VERSION": "1.0.0",
+    "APP_VERSION": "1.0.1",
     "APP_AUTHOR": "Fabiano Oliveira",
     "APP_EMAIL": "contato@veelv.com.br",
     "APP_COMPANY": "VEELV"

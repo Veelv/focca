@@ -1,13 +1,22 @@
 {
   "name": "focca",
   "description": "FOCCA is a modern and flexible ORM (Object-Relational Mapping) for Node.js, designed to simplify interaction with relational and non-relational databases. With an intuitive and powerful API, FOCCA enables developers to build robust and scalable applications with ease.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/index.ts",
   "license": "MIT",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build/",
+    "src/",
+    "README.md",
+    "LICENSE.md",
+    "RELEASE.md"
+  ],
   "bin": {
-    "focca": "./src/cli/focca.ts"
+    "focca": "./build/cli/focca.js"
   },
   "scripts": {
+    "main": "./build/index.js",
     "build": "tsc",
     "focca": "ts-node ./src/cli/focca.ts",
     "test": "jest"
