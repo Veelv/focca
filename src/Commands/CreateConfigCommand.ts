@@ -23,7 +23,8 @@ export class CreateConfigCommand {
         return;
       }
       
-      const configFilePath = path.join(__dirname, '../../', 'focca.config.json');
+      // Ajustado para usar process.cwd() e salvar na raiz do projeto que usa a biblioteca
+      const configFilePath = path.join(process.cwd(), 'focca.config.json');
       
       let config: Config = {
         default: databaseTypes[0],
@@ -36,8 +37,8 @@ export class CreateConfigCommand {
           config = existingConfig;
           
           if (!options.remove && !options.update) {
-            console.log("A configuração já foi criada. Para atualizar, use o comando 'config:refresh'.");
-            return;
+              console.log("A configuração já foi criada. Para atualizar, use o comando 'config:refresh'.");
+              return;
           }
         } catch (error) {
           console.error("Erro ao ler configuração existente:", error);

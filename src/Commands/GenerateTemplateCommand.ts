@@ -14,8 +14,11 @@ export class GenerateTemplateCommand {
   async execute(type: string, name: string, table?: string): Promise<void> {
     const template = await this.getTemplate(type, name, table);
     const projectDir = process.cwd();
-    const capitalizedType = type.charAt(0).toUpperCase() + type.slice(1);
-    const dirPath = path.join(projectDir, "src", `${capitalizedType}s`);
+    
+    // Ajusta para criar "Entities" ao invés de "Entitys"
+    const capitalizedType = type.toLowerCase() === "entity" ? "Entities" : type.charAt(0).toUpperCase() + type.slice(1) + "s";
+    
+    const dirPath = path.join(projectDir, "src", capitalizedType);
     const filePath = path.join(dirPath, `${name}.ts`);
 
     // Create the directory if it doesn't exist

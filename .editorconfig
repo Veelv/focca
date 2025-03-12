@@ -1,0 +1,42 @@
+# EditorConfig helps maintain consistent coding styles for multiple editors and IDEs.
+# Read more at https://editorconfig.org.
+
+# Set the root for the project
+root = true
+
+# Apply the following settings to all JavaScript/TypeScript files (including JSX/TSX)
+[*]
+indent_style = space       # Use spaces instead of tabs
+indent_size = 2            # Indentation is 2 spaces
+tab_width = 2              # Tab width is 2 spaces
+charset = utf-8            # Use UTF-8 character encoding
+end_of_line = lf           # Use LF (Line Feed) for line endings
+trim_trailing_whitespace = true  # Trim trailing whitespace
+insert_final_newline = true    # Ensure each file ends with a new line
+
+# Apply the following settings to all JSON files
+[*.json]
+indent_style = space
+indent_size = 2
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+# Apply the following settings to Markdown files
+[*.md]
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Apply the following settings to YAML files
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+# Apply the following settings to TypeScript files specifically for an ORM-like project
+[*.{ts,tsx}]
+# Enable strict configurations for TypeScript files, useful for a strong-typed ORM like TypeORM
+quote_type = double         # Use double quotes for strings
+no_trailing_comma = false   # Allow trailing commas (useful for defining object structures)

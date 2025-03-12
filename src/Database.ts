@@ -11,16 +11,23 @@ export class Database {
   public static connections: { [key: string]: Connection } = {};
   public static defaultConnection: string | null = null;
   public static config: Config = {};
-  
+
   static {
     const pathName = "focca.config.json";
-    const configFilePath = path.join(process.cwd(), pathName);
+    const projectRootConfig = path.resolve(__dirname, "../../", pathName);
+    const cwdConfig = path.resolve(process.cwd(), pathName);
+
+    const configFilePath = fs.existsSync(projectRootConfig)
+      ? projectRootConfig
+      : cwdConfig;
 
     if (fs.existsSync(configFilePath)) {
       const configFileContent = fs.readFileSync(configFilePath, "utf-8");
       this.config = JSON.parse(configFileContent);
     } else {
-      console.warn(`Configuration file ${pathName} was not found, use the config:database command to generate the configuration file for the database.`);
+      console.warn(
+        `Configuration file ${pathName} was not found, use the config:database command to generate the configuration file for the database.`
+      );
       this.config = { default: "mysql", connections: {} };
     }
 
@@ -34,7 +41,10 @@ export class Database {
     }
   }
 
-  static addConnection(name: string, config: ConnectionConfig): typeof Database {
+  static addConnection(
+    name: string,
+    config: ConnectionConfig
+  ): typeof Database {
     this.config.connections = this.config.connections || {};
     this.config.connections[name] = config;
     return this;

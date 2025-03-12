@@ -4,9 +4,9 @@ import path from "path";
 
 dotenv.config();
 
-// Função para carregar informações do arquivo JSON
 const loadAppInfo = (): any => {
-  const filePath = path.join(__dirname, 'appInfo.json');
+  const pathName = "appInfo.json";
+  const filePath = path.join(__dirname, pathName);
   if (fs.existsSync(filePath)) {
     const data = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(data);
@@ -14,7 +14,6 @@ const loadAppInfo = (): any => {
   return {};
 };
 
-// Carregar informações do JSON
 const appInfo = loadAppInfo();
 
 export class Version {

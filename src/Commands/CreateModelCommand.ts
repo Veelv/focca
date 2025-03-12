@@ -10,7 +10,7 @@ export class CreateModelCommand {
    */
   async execute(name: string): Promise<void> {
     const generator = new GenerateTemplateCommand();
-    // Generate the model template
+    // Generate the model template in "Entities" instead of "Entitys"
     await generator.execute('entity', name, '');
     console.log(`Model ${name} created.`);
   }
