@@ -3,43 +3,48 @@ import path from "path";
 import { QueryBuilder } from "../QueryBuilder";
 import { Database } from "../Database";
 
-/**
- * Command to create a new seeder file.
- */
 export class CreateSeederCommand {
-  /**
-   * Executes the command to create a seeder file for a specified table.
-   * @param name - The name of the seeder.
-   * @param table - The name of the table the seeder is for.
-   */
-  async execute(name: string, table: string): Promise<void> {
+  async execute(name: string): Promise<void> {
     const projectDir = process.cwd();
     const dirPath = path.join(projectDir, "src", "migrations", "seeder");
     const seederFilePath = path.join(dirPath, `${name}.ts`);
 
     fs.mkdirSync(dirPath, { recursive: true });
 
-    const templatePath = path.join(__dirname, "./templates", "seeder.tpl");
-    let seederTemplate = fs.readFileSync(templatePath, "utf-8");
+    // Use __dirname para localizar os templates em relação ao arquivo atual
+    const templatePath = path.join(__dirname, "../templates", "seeder.tpl");
+    
+    // Verificar se o template existe
+    if (!fs.existsSync(templatePath)) {
+      console.error(`Template não encontrado: ${templatePath}`);
+      // Tentar caminho alternativo - pacote instalado
+      const altTemplatePath = path.join(__dirname, "../../templates", "seeder.tpl");
+      if (fs.existsSync(altTemplatePath)) {
+        console.log(`Template encontrado em caminho alternativo: ${altTemplatePath}`);
+        let seederTemplate = fs.readFileSync(altTemplatePath, "utf-8");
+        seederTemplate = seederTemplate.replace(/{{name}}/g, name);
+        // Remover a substituição da tabela, pois agora é gerenciada dentro do seeder
 
+        fs.writeFileSync(seederFilePath, seederTemplate.trim());
+        console.log(`Seeder ${name} created in ${dirPath}.`);
+        return;
+      }
+      return;
+    }
+
+    let seederTemplate = fs.readFileSync(templatePath, "utf-8");
     seederTemplate = seederTemplate.replace(/{{name}}/g, name);
-    seederTemplate = seederTemplate.replace(/{{table}}/g, table);
+    // Remover a substituição da tabela, pois agora é gerenciada dentro do seeder
 
     fs.writeFileSync(seederFilePath, seederTemplate.trim());
-    console.log(`Seeder ${name} created for table ${table} in ${dirPath}.`);
+    console.log(`Seeder ${name} created in ${dirPath}.`);
 
     // Executa o seeder após a criação
-    await this.runSeeder(name, table);
+    await this.runSeeder(name);
   }
 
-  /**
-   * Run the seeder for the specified table.
-   * @param name - The name of the seeder.
-   * @param table - The name of the table the seeder is for.
-   */
-  async runSeeder(name: string, table: string): Promise<void> {
+  async runSeeder(name: string): Promise<void> {
     try {
-
       // Obtém a conexão
       const connection = await Database.getConnection();
 

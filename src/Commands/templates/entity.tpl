@@ -1,5 +1,5 @@
-import { Model } from './Model';
+import { Entity } from 'focca';
 
-export class {{name}} extends Model {
-  // Defina os atributos e métodos do modelo aqui
+export class {{name}} extends Entity {
+  // 
 }

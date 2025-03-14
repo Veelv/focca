@@ -1,35 +1,48 @@
 import fs from "fs";
 import path from "path";
 
-/**
- * Command to create a new migration file.
- */
 export class CreateMigrationCommand {
-  /**
-   * Executes the command to create a migration file with a timestamp and specified name.
-   * @param name - The name of the migration.
-   */
   async execute(name: string): Promise<void> {
-    // Generate a timestamp for the migration file name
     const timestamp = new Date()
       .toISOString()
       .replace(/[-:.]/g, "")
       .slice(0, 14);
-    const migrationFileName = `${timestamp}_${name}.ts`;
+    
+    // Nome do arquivo sempre minúsculo
+    const migrationFileName = `${timestamp}_${name.toLowerCase()}.ts`;
+
+    // Nome da classe começa com maiúscula e vem antes do timestamp
+    const className = `${name.charAt(0).toUpperCase() + name.slice(1)}${timestamp}`;
+
     const projectDir = process.cwd();
-    const dirPath = path.join(projectDir, "src/migrations/database",);
-    const migrationFilePath = path.join(dirPath, `${migrationFileName}`);
+    const dirPath = path.join(projectDir, "src/migrations/database");
+    const migrationFilePath = path.join(dirPath, migrationFileName);
 
-   
+    // Procura o template em relação ao diretório atual
+    const templatePath = path.join(__dirname, "../templates", "migration.tpl");
 
-    // Read the migration template from the file
-    const templatePath = path.join(__dirname, './templates', 'migration.tpl');
-    let migrationTemplate = fs.readFileSync(templatePath, 'utf-8');
+    // Verificar se o template existe
+    if (!fs.existsSync(templatePath)) {
+      console.error(`Template não encontrado: ${templatePath}`);
+      // Tentar caminho alternativo - pacote instalado
+      const altTemplatePath = path.join(__dirname, "../../templates", "migration.tpl");
+      if (fs.existsSync(altTemplatePath)) {
+        console.log(`Template encontrado em caminho alternativo: ${altTemplatePath}`);
+        let migrationTemplate = fs.readFileSync(altTemplatePath, "utf-8");
+        migrationTemplate = migrationTemplate.replace(/{{name}}/g, className);
+        
+        fs.mkdirSync(dirPath, { recursive: true });
+        fs.writeFileSync(migrationFilePath, migrationTemplate.trim());
+        console.log(`Migration created: ${migrationFileName}`);
+        return;
+      }
+      return;
+    }
 
-    // Replace placeholders in the template
-    migrationTemplate = migrationTemplate.replace(/{{name}}/g, name);
+    let migrationTemplate = fs.readFileSync(templatePath, "utf-8");
+    migrationTemplate = migrationTemplate.replace(/{{name}}/g, className);
+    
     fs.mkdirSync(dirPath, { recursive: true });
-    // Write the migration file to the filesystem
     fs.writeFileSync(migrationFilePath, migrationTemplate.trim());
     console.log(`Migration created: ${migrationFileName}`);
   }

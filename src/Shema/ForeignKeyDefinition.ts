@@ -34,14 +34,13 @@ export class ForeignKeyDefinition {
     return this;
   }
 
-  // Método para construir a definição da chave estrangeira
   public getForeignKeyDefinition(): any {
     if (!this.targetTable || !this.targetColumns) {
       throw new Error('Foreign key constraint requires table and referenced column');
     }
 
     const column = typeof this.columns === 'string' ? this.columns : this.columns[0];
-    
+
     // Adiciona a chave estrangeira ao blueprint
     this.blueprint.addForeignKey({
       column,

@@ -1,16 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-/**
- * Command to generate templates for migrations, models, or seeders.
- */
 export class GenerateTemplateCommand {
-  /**
-   * Generates a template for migrations, models, or seeders.
-   * @param type - The type of template (migration, model, seeder).
-   * @param name - The name of the template.
-   * @param table - The name of the table (only for seeders).
-   */
   async execute(type: string, name: string, table?: string): Promise<void> {
     const template = await this.getTemplate(type, name, table);
     const projectDir = process.cwd();
@@ -29,30 +20,42 @@ export class GenerateTemplateCommand {
     console.log(`${capitalizedType} ${name} created in ${dirPath}.`);
   }
 
-  /**
-   * Returns the appropriate template based on the type.
-   * @param type - The type of template.
-   * @param name - The name of the template.
-   * @param table - The name of the table (only for seeders).
-   */
   private async getTemplate(
     type: string,
     name: string,
     table?: string
   ): Promise<string> {
-    const templatePath = path.join(
-      __dirname,
-      "../Commands/templates",
-      `${type}.tpl`
-    );
+    // Busca o template no diretório atual primeiro
+    const templatePath = path.join(__dirname, "../templates", `${type}.tpl`);
+    
+    // Verificar se o template existe
+    if (!fs.existsSync(templatePath)) {
+      console.error(`Template não encontrado: ${templatePath}`);
+      // Tentar caminho alternativo - pacote instalado
+      const altTemplatePath = path.join(__dirname, "../../templates", `${type}.tpl`);
+      if (fs.existsSync(altTemplatePath)) {
+        console.log(`Template encontrado em caminho alternativo: ${altTemplatePath}`);
+        let template = fs.readFileSync(altTemplatePath, "utf-8");
+        
+        // Replace placeholders in the template
+        template = template.replace(/{{name}}/g, name);
+        if (table) {
+          template = template.replace(/{{table}}/g, table);
+        }
+        
+        return template;
+      }
+      return `// Template for ${type} not found. Please create a template file.`;
+    }
+    
     let template = fs.readFileSync(templatePath, "utf-8");
-
+    
     // Replace placeholders in the template
     template = template.replace(/{{name}}/g, name);
     if (table) {
       template = template.replace(/{{table}}/g, table);
     }
-
+    
     return template;
   }
 }

@@ -32,7 +32,7 @@ async function runCommand() {
       break;
     case "create:seeder":
       const seederCommand = new CreateSeederCommand();
-      await seederCommand.execute(args[0], args[1]);
+      await seederCommand.execute(args[0]);
       break;
     case "migrate":
       const migrateCommand = new MigrateCommand();
@@ -63,14 +63,12 @@ async function runCommand() {
       await removeConfigCommand.execute(args, { remove: true });
       break;
     case "run:seeder":
-      if (args.length < 2) {
-        console.error(
-          "Erro: Dois argumentos são necessários para o comando run:seeder (nome do seeder e nome da tabela)."
-        );
-        process.exit(1);
+      if (args[0] === 'run:seeder') {
+        const seederCommand = new CreateSeederCommand();
+        await seederCommand.execute(args[1]);
       }
       const runSeederCommand = new CreateSeederCommand();
-      await runSeederCommand.runSeeder(args[0], args[1]);
+      await runSeederCommand.runSeeder(args[0]);
       break;
     case "list":
       const listCommand = new ListCommandsCommand();

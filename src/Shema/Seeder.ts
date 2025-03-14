@@ -7,9 +7,9 @@ export abstract class Seeder {
     this.queryBuilder = queryBuilder;
   }
 
-  abstract run(): void;
+  abstract run(): Promise<void>;
 
-  protected insert(table: string, data: any[]): void {
-    this.queryBuilder.table(table).insert(data);
+  protected insert(data: any[], table: string): Promise<any> {
+    return this.queryBuilder.table(table).insert(data);
   }
 }

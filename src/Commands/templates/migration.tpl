@@ -1,22 +1,21 @@
-import { Migration } from './Migration';
-// import { Migration, Schema } from 'focca';
+import { Blueprint, Migration, Schema } from 'focca';
 
-export class {{name}} extends Migration {
+export default class {{name}} extends Migration {
   /**
-* Run the migrations.
-*
-* @return void
-*/
+  * Run the migrations.
+  *
+  * @return void
+  */
   async up(): Promise<void> {
-    // Lógica para aplicar a migração
+    // 
   }
 
   /**
-* Revert the migrations.
-*
-* @return void
-*/
+  * Revert the migrations.
+  *
+  * @return void
+  */
   async down(): Promise<void> {
-    // Lógica para reverter a migração
+    await Schema.dropIfExists('table_name');
   }
 }
