@@ -22,7 +22,7 @@
     "RELEASE.md"
   ],
   "bin": {
-    "focca": "./build/cli/focca.js"
+    "focca": "build/cli/focca.js"
   },
   "scripts": {
     "main": "./build/index.js",
