@@ -11,6 +11,9 @@ build/
 # Environment variables
 .env
 
+
+.npmrc
+
 # Logs
 logs
 *.log
