@@ -1,5 +1,5 @@
 {
-  "name": "focca",
+  "name": "@fabianooliveira/focca",
   "description": "FOCCA is a modern and flexible ORM (Object-Relational Mapping) for Node.js, designed to simplify interaction with relational and non-relational databases. With an intuitive and powerful API, FOCCA enables developers to build robust and scalable applications with ease.",
   "version": "1.0.3",
   "main": "src/index.ts",
@@ -65,7 +65,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Veelv/focca"
+    "url": "git+https://github.com/Veelv/focca.git"
   },
   "keywords": [
     "orm",
